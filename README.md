@@ -1,5 +1,6 @@
 # README.md Generator
 Creates README.md files quickly
+<a href="https://imgflip.com/gif/43ng3t">via Imgflip</a></p></div>
 # Table of content
 - [Installation](#installation)
 - [Usage](#usage)
