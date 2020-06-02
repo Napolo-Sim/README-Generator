@@ -74,3 +74,120 @@ inquirer.prompt([
         when: (answers) => answers.creditsConfirm === true,
     }
 ])
+    .then((response) => {
+        // SETTING VALUE IF NO INPUT FROM USER
+        !response.creditsInput ? response.creditsInput = "N/A" : response.creditsInput;
+        !response.licenceInput ? response.licenceInput = "N/A" : response.licenceInput;
+
+        userChoices = response
+        return response
+
+    })
+    // CREATING INITIAL README FILE WITH FIRST SECTIONS
+    .then((response) => {
+        fs.writeFile(`README.md`, `# ${response.title}
+${response.description}
+# Table of content
+- [Installation](#installation)
+- [Usage](#usage)
+- [Licence](#licence)
+- [Contributing](#contributing)
+- [Questions](#questions)
+# Installation
+${response.installation}
+# Usage
+${response.usage}
+# Licence
+${response.licenceInput}
+# Credits
+${response.creditsInput}
+`
+            , (error) => {
+                if (error) {
+                    console.log(error);
+                }
+            })
+        return response.username
+    })
+
+    .then((response) => axios
+        .get(`https://api.github.com/users/${userChoices.username}`)
+        .then((response) => {
+            repoUrl = response.data.repos_url
+            return repoUrl
+        }))
+    .then((response) => axios
+        .get(response)
+        .then((response) => {
+            const allRepos = response.data
+            allRepos.forEach((element) => {
+                repos.push(element.name)
+            });
+        }
+        ))
+    .then((response) => {
+        asyncInq(response)
+        asyncAppend()
+    }).catch((err) => console.log(err))
+
+// ASYNC PROMPT TO LOAD REPOS FROM USER AND GENERATE BADGE
+const asyncInq = async () => {
+    try {
+        await inquirer.prompt([
+            {
+                type: 'autocomplete',
+                name: 'repositories',
+                message: 'Type the name of your repository / Select a repository',
+                source: searchRepos,
+            }
+        ]).then((response) => {
+            const userRepo = repos.indexOf(response.repositories)
+
+            axios
+                .get(repoUrl)
+                .then((response) => {
+                    const language = response.data[userRepo].language
+                    badge = `https://img.shields.io/badge/-${language}-blue`
+                    return badge
+                })
+                .then(() => {
+                    fs.appendFile(`README.md`, `
+## Main Language used in this repo              
+![badge](${badge})`
+                        , (error) => {
+                            if (error) {
+                                console.log(error);
+                            }
+                        }
+                    )
+                })
+        })
+    } catch (err) {
+        console.log(err);
+    } console.log("Your readme has been created");
+}
+const asyncAppend = async () => {
+    try {
+        await axios
+            .get(`https://api.github.com/users/${userChoices.username}`)
+            .then(response => {
+                !response.data.email ? response.data.email = "napolo101@gmail.com" : response.data.email;
+                return response
+            })
+            .then(response => {
+                fs.appendFile(`README.md`, `
+# Questions
+![logo](${response.data.avatar_url})
+- ${response.data.name}
+- Email : ${response.data.email}`
+                    , (error) => {
+                        if (error) {
+                            console.log(error);
+                        }
+                    }
+                )
+            })
+    } catch (err) {
+        console.log(err);
+    }
+}
