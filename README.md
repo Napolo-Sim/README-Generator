@@ -1,5 +1,5 @@
-# Test Title
-Test Description
+# README.md Generator
+Creates README.md files quickly
 # Table of content
 - [Installation](#installation)
 - [Usage](#usage)
@@ -7,13 +7,17 @@ Test Description
 - [Contributing](#contributing)
 - [Questions](#questions)
 # Installation
-npm install
+npm install in the terminal
 # Usage
-Test
+To create readmes much quicker than to type them out manually
 # Licence
 MIT
 # Credits
-Credits test
+N/A
 
+# Questions
+![logo](https://avatars2.githubusercontent.com/u/60802699?v=4)
+- Napoleon Vuong
+- Email : napolo101@gmail.com
     ## Main Language within repo              
     ![badge](https://img.shields.io/badge/-JavaScript-blue)

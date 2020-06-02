@@ -136,7 +136,7 @@ const asyncInq = async () => {
             {
                 type: 'autocomplete',
                 name: 'repositories',
-                message: 'Type the name of your repository / Select a repository',
+                message: 'Select your precreated repo for this project',
                 source: searchRepos,
             }
         ]).then((response) => {
