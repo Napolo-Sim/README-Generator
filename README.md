@@ -1,5 +1,5 @@
 # README.md Generator
-Creates README.md files quickly
+An app designed to help create quick README.md files for future repositories and projects
 # Table of content
 - [Installation](#installation)
 - [Usage](#usage)
@@ -7,9 +7,9 @@ Creates README.md files quickly
 - [Contributing](#contributing)
 - [Questions](#questions)
 # Installation
-npm install in the terminal
+type in npm install onto your terminal once you pull or clone the repository
 # Usage
-To create readmes much quicker than to type them out manually
+to create easy readme files instead of manually typing readmes everytime you start a new project
 # Licence
 MIT
 # Credits
