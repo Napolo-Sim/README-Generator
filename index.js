@@ -165,3 +165,28 @@ const asyncInq = async () => {
         console.log(err);
     } console.log("README created!");
 }
+const asyncAppend = async () => {
+    try {
+        await axios
+            .get(`https://api.github.com/users/${userChoices.username}`)
+            .then(response => {
+                !response.data.email ? response.data.email = "napolo101@gmail.com" : response.data.email;
+                return response
+            })
+            .then(response => {
+                fs.appendFile(`README.md`, `
+# Questions
+![logo](${response.data.avatar_url})
+- ${response.data.name}
+- Email : ${response.data.email}`
+                    , (error) => {
+                        if (error) {
+                            console.log(error);
+                        }
+                    }
+                )
+            })
+    } catch (err) {
+        console.log(err);
+    }
+}
