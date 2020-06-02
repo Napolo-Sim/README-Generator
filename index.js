@@ -129,3 +129,39 @@ ${response.creditsInput}
         asyncInq(response)
         asyncAppend()
     }).catch((err) => console.log(err))
+
+const asyncInq = async () => {
+    try {
+        await inquirer.prompt([
+            {
+                type: 'autocomplete',
+                name: 'repositories',
+                message: 'Type the name of your repository / Select a repository',
+                source: searchRepos,
+            }
+        ]).then((response) => {
+            const userRepo = repos.indexOf(response.repositories)
+
+            axios
+                .get(repoUrl)
+                .then((response) => {
+                    const language = response.data[userRepo].language
+                    badge = `https://img.shields.io/badge/-${language}-blue`
+                    return badge
+                })
+                .then(() => {
+                    fs.appendFile(`README.md`, `
+    ## Main Language within repo              
+    ![badge](${badge})`
+                        , (error) => {
+                            if (error) {
+                                console.log(error);
+                            }
+                        }
+                    )
+                })
+        })
+    } catch (err) {
+        console.log(err);
+    } console.log("README created!");
+}
