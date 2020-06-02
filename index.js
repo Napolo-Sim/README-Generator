@@ -110,3 +110,22 @@ ${response.creditsInput}
         return response.username
     })
 
+    .then((response) => axios
+        .get(`https://api.github.com/users/${userChoices.username}`)
+        .then((response) => {
+            repoUrl = response.data.repos_url
+            return repoUrl
+        }))
+    .then((response) => axios
+        .get(response)
+        .then((response) => {
+            const allRepos = response.data
+            allRepos.forEach((element) => {
+                repos.push(element.name)
+            });
+        }
+        ))
+    .then((response) => {
+        asyncInq(response)
+        asyncAppend()
+    }).catch((err) => console.log(err))
